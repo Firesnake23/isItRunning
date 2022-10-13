@@ -1,0 +1,7 @@
+workdir/vendor
+
+workdir/bootstrap.php
+workdir/cli-config.php
+
+workdir/composer.lock
+workdir/cache

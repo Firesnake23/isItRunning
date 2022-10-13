@@ -1,0 +1,40 @@
+{% extends 'page.html.twig' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            Create Check
+        </div>
+        <div class="card-body">
+            <form method="post" action="/check/save">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="name">
+                </div>
+                <div class="mb-3">
+                    <label for="url" class="form-label">Url</label>
+                    <input type="text" class="form-control" id="url" name="url" placeholder="https://example.com">
+                </div>
+                <div class="form-check">
+                    <input type="hidden" value="0" name="useHeaders">
+                    <input class="form-check-input" type="checkbox" value="1" id="headers" name="useHeaders">
+                    <label class="form-check-label" for="headers">
+                        Use Headers
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <label for="runnerConfig" class="form-label">Config</label>
+                    <textarea class="form-control" id="runnerConfig" name="runnerConfig" rows="5"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="url" class="form-label">Checker</label>
+                    <select name="checker" class="form-select">
+                        {% for performer in checkRunners %}
+                            <option value="{{ get_class(performer) }}">{{ performer.getName() }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="submit" class="btn btn-success" value="Create">
+            </form>
+        </div>
+    </div>
+{% endblock %}

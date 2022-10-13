@@ -1,0 +1,78 @@
+{% extends 'page.html.twig' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            Edit Check
+        </div>
+        <div class="card-body">
+            <form method="post" action="/check/save">
+                <input type="hidden" name="id" value="{{ check.getId() }}">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ check.getName() }}" placeholder="name">
+                </div>
+                <div class="mb-3">
+                    <label for="url" class="form-label">Url</label>
+                    <input type="text" class="form-control" id="url" name="url" value="{{ check.getUrl() }}" placeholder="https://example.com">
+                </div>
+                <div class="form-check">
+                    <input type="hidden" value="0" name="useHeaders">
+                    {% apply spaceless %}
+                    <input class="form-check-input" type="checkbox" value="1" id="headers" name="useHeaders"
+                        {% if check.isUseHeaders() %}
+                            checked
+                        {% endif %}
+                    >
+                    {% endapply %}
+                    <label class="form-check-label" for="headers">
+                        Use Headers
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <label for="runnerConfig" class="form-label">Config</label>
+                    <textarea class="form-control" id="runnerConfig" name="runnerConfig" rows="5">{{ check.getRunnerConfig() }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="url" class="form-label">Checker</label>
+                    <select name="checker" class="form-select">
+                        {% for performer in checkRunners %}
+                            {% apply spaceless %}
+                            <option value="{{ get_class(performer) }}"
+                            {% if check.getChecker() == get_class(performer) %}
+                                    selected
+                            {% endif %}
+                            >{{ performer.getName() }}</option>
+                            {% endapply %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    {% for env in environments %}
+                        <div class="form-check">
+                            {% apply spaceless %}
+                                <input class="form-check-input" value="1" type="checkbox" id="check_{{ loop.index }}" onchange="saveEnvironment({{ env.getId() }})"
+                                        {% if check.hasEnvironment(env)%}
+                                            checked
+                                        {% endif %}
+                                >
+                            {% endapply %}
+                            <label class="form-check-label" for="check_{{ loop.index }}">
+                                {{ env.getName() }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <input type="submit" class="btn btn-success" value="Save">
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        async function saveEnvironment(envId) {
+            let checkId = document.getElementsByName('id')[0].value;
+            let response = await apiCall('/check/toggleEnv', {
+                env: envId,
+                check: checkId
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'page.html.twig' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            Environments
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Action</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for environment in list%}
+                        {% set bg = statusMap[environment.getId()] == true ? 'success' : 'danger' %}
+                        {% set text = statusMap[environment.getId()] == true ? 'OK' : 'FAILED' %}
+                        <tr>
+                            <td>{{ environment.getName() }}</td>
+                            <td>
+                                <a href="/environment/delete?q={{ environment.getId() }}" class="btn btn-danger">Delete</a>
+                                <a href="/environment/edit?q={{ environment.getId() }}" class="btn btn-primary">Edit</a>
+                                <a href="/environment/runChecks?q={{ environment.getId() }}" class="btn btn-success">Run</a>
+                            </td>
+                            <td>
+                                <label class="badge bg-{{bg}}">{{ text }}</label>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="environment/create" class="btn btn-success">Create</a>
+        </div>
+    </div>
+{% endblock %}

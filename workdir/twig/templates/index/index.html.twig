@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="p-3">
+        <div class="row justify-content-md-center">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        Login
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="/login">
+                            <div class="mb-3">
+                                <label for="username">Username</label>
+                                <input class="form-control" type="text" name="username" id="username" autofocus>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password">Password</label>
+                                <input class="form-control" type="password" name="password" id="password">
+                            </div>
+                            <input type="submit" value="Login" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

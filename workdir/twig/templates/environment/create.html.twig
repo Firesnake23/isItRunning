@@ -1,0 +1,47 @@
+{% extends 'page.html.twig' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            Create Environment
+        </div>
+        <div class="card-body">
+            <form method="post" action="/environment/save" class="row g-3">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="name">
+                </div>
+                <div class="col-md-6">
+                    <label for="samplingRate" class="form-label">Sampling Rate</label>
+                    <input type="text" class="form-control" id="samplingRate" name="samplingRate" placeholder="* * * * *" onchange="getNextRuns()">
+                </div>
+                <div class="col-md-6">
+                    <label for="samplingRate" class="form-label">Running at</label>
+                    <textarea class="form-control" disabled id="running" rows="5"></textarea>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-success" value="Create">
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        async function getNextRuns() {
+            let cronString = document.getElementById('samplingRate').value;
+            let response = await apiCall('/cron/nextRuns', {'cronString': cronString});
+            let responseJson = (await response.json());
+
+            if(responseJson.status === 'success') {
+                let val = '';
+                for(let i = 0; i < responseJson.data.length; i++) {
+                    if(i > 0) {
+                        val += String.fromCharCode(13);
+                    }
+                    val += responseJson.data[i];
+                }
+                document.getElementById('running').value = val;
+                return;
+            }
+            document.getElementById('running').value = 'Invalid cron string';
+        }
+    </script>
+{% endblock %}

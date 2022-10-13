@@ -1,0 +1,31 @@
+{% extends 'page.html.twig' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            Checks
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for check in list%}
+                        <tr>
+                            <td>{{ check.getName() }}</td>
+                            <td>
+                                <a href="/check/delete?q={{ check.getId() }}" class="btn btn-danger">Delete</a>
+                                <a href="/check/edit?q={{ check.getId() }}" class="btn btn-primary">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="/check/create" class="btn btn-success">Create</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,95 @@
+<?php
+
+namespace firesnake\isItRunning\entities;
+
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="firesnake\isItRunning\repositories\EnvironmentResultRepository")
+ * @ORM\Table("environment_result")
+ */
+class EnvironmentResult
+{
+    /**
+     * @ORM\Id()
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue()
+     * @var int
+     */
+    private int $id;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var DateTime
+     */
+    private DateTime $performed;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CheckableEnvironment", cascade={"remove"})
+     * @ORM\JoinColumn(name="environment_id", referencedColumnName="id", onDelete="cascade")
+     * @var CheckableEnvironment
+     */
+    private CheckableEnvironment $checkableEnvironment;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CheckResult", mappedBy="environmentResult")
+     *  @var Collection|ArrayCollection
+     */
+    private Collection $checkResults;
+
+    public function __construct()
+    {
+        $this->checkResults = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getPerformed(): DateTime
+    {
+        return $this->performed;
+    }
+
+    /**
+     * @param DateTime $performed
+     */
+    public function setPerformed(DateTime $performed): void
+    {
+        $this->performed = $performed;
+    }
+
+    /**
+     * @return CheckableEnvironment
+     */
+    public function getCheckableEnvironment(): CheckableEnvironment
+    {
+        return $this->checkableEnvironment;
+    }
+
+    /**
+     * @param CheckableEnvironment $checkableEnvironment
+     */
+    public function setCheckableEnvironment(CheckableEnvironment $checkableEnvironment): void
+    {
+        $this->checkableEnvironment = $checkableEnvironment;
+    }
+
+    /**
+     * @return CheckResult[]
+     */
+    public function getCheckResults() :array
+    {
+        return $this->checkResults->getValues();
+    }
+}
