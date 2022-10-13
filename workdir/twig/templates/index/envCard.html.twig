@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-header">
+        {{ environment.getName() }}
+    </div>
+    <div class="card-body">
+        {% set bg = stats['status'] == true ? 'success' : 'danger' %}
+        {% set text = stats['status'] == true ? 'OK' : 'FAILED' %}
+        <p>Status: <label class="badge bg-{{ bg }}">{{ text }}</label></p>
+        <p>Total Checks: {{ stats['runCount'] }}</p>
+
+        {% if stats['status'] == false %}
+            <p>Fail Streak: {{ stats['streak'] }} </p>
+        {% endif %}
+
+        {% if stats['status'] == true %}
+            <p>Success Streak: {{ stats['streak'] }}</p>
+        {% endif %}
+
+        <a href="/environmentResults?q={{ environment.getId() }}" class="btn btn-primary">Details</a>
+    </div>
+</div>

@@ -5,3 +5,5 @@ workdir/cli-config.php
 
 workdir/composer.lock
 workdir/cache
+
+workdir/src/entities/proxies

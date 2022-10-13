@@ -2,6 +2,7 @@
 
 namespace firesnake\isItRunning\controllers;
 
+use firesnake\isItRunning\entities\EnvironmentResult;
 use firesnake\isItRunning\events\RequestEvent;
 use firesnake\isItRunning\http\RedirectResponse;
 use firesnake\isItRunning\http\TwigResponse;
@@ -32,6 +33,56 @@ class IndexController
     {
         /** @var IsItRunning $isItRunning */
         $isItRunning = $event->getParam('isItRunning');
-        return new TwigResponse('index/dashboard.html.twig', ['authenticatedUser' => $isItRunning->getAuthenticatedUser()]);
+        $envManager = $isItRunning->getEnvironmentManager();
+
+        $environments = $envManager->listEnvironments();
+
+        $stats = [];
+        foreach($environments as $environment) {
+            $results = $environment->getEnvironmentResults();
+            /** @var EnvironmentResult[] $resultsOrdered */
+            $resultsOrdered = array_reverse($results);
+            $status = true;
+            $streak = 0;
+            if(count($resultsOrdered) > 0) {
+                $checkResults = $resultsOrdered[0]->getCheckResults();
+                foreach($checkResults as $result) {
+                    $status = $status && $result->isPassed();
+                }
+
+                $streakFound = false;
+                foreach($resultsOrdered as $result) {
+                    $checkResults = $result->getCheckResults();
+                    $singleResult = true;
+                    foreach($checkResults as $checkResult) {
+                        $singleResult = $singleResult && $checkResult->isPassed();
+                    }
+
+                    if($status == $singleResult && !$streakFound) {
+                        $streak++;
+                    }
+
+                    if($status != $singleResult && !$streakFound) {
+                        $streakFound = true;
+                    }
+                }
+            }
+
+
+            $stats[$environment->getId()] = [
+                'runCount' => count($results),
+                'status' => $status,
+                'streak' => $streak
+            ];
+        }
+
+
+        /** @var IsItRunning $isItRunning */
+        $isItRunning = $event->getParam('isItRunning');
+        return new TwigResponse('index/dashboard.html.twig', [
+            'authenticatedUser' => $isItRunning->getAuthenticatedUser(),
+            'environments' => $environments,
+            'stats' => $stats
+        ]);
     }
 }
