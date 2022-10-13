@@ -29,6 +29,15 @@ class ResultController
 
         $envResults = array_reverse($envResults);
 
+        $page = 1;
+        if(isset($request->getGet()['p'])) {
+            $page = $request->getGet()['p'];
+        }
+
+        $maxPages = ceil(count($envResults) / 30);
+        $envResults = array_splice($envResults, ($page - 1) * 30, 30);
+
+
         $statusMap = [];
         foreach ($envResults as $envResult) {
             $checkResults = $envResult->getCheckResults();
@@ -42,6 +51,8 @@ class ResultController
         return new TwigResponse('/result/overview.html.twig', [
             'results' => $envResults,
             'statusMap' => $statusMap,
+            'maxPages' => $maxPages,
+            'page' => $page,
             'authenticatedUser' => $isItRunning->getAuthenticatedUser()
         ]);
     }

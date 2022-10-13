@@ -31,6 +31,49 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div class="row">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="/environmentResults?q={{ results[0].getCheckableEnvironment.getId() }}&p=1" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        {% if page > 2 %}
+                            <li class="page-item">
+                                <a class="page-link" href="/environmentResults?q={{ results[0].getCheckableEnvironment().getId() }}&p={{ page - 2 }}">{{ page - 2}}</a>
+                            </li>
+                        {% endif %}
+
+                        {% if page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="/environmentResults?q={{ results[0].getCheckableEnvironment().getId() }}&p={{ page - 1 }}">{{ page - 1}}</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item active"><a class="page-link" href="">{{ page }}</a></li>
+
+                        {% if page != maxPages %}
+                        <li class="page-item">
+                            <a class="page-link" href="/environmentResults?q={{ results[0].getCheckableEnvironment().getId() }}&p={{ page + 1 }}">{{ page + 1 }}</a>
+                        </li>
+                        {% endif %}
+
+                        {% if page + 1 < maxPages %}
+                            <li class="page-item">
+                                <a class="page-link" href="/environmentResults?q={{ results[0].getCheckableEnvironment().getId() }}&p={{ page + 2 }}">{{ page + 2 }}</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item">
+                            <a class="page-link" href="/environmentResults?q={{ results[0].getCheckableEnvironment().getId() }}&p={{ maxPages }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 {% endblock %}
