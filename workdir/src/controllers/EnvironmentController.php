@@ -30,12 +30,15 @@ class EnvironmentController
 
         foreach($environments as $environment) {
             $envResult = $envResultRepo->getLatestResult($environment);
-            $checks = $envResult->getCheckResults();
             $passed = true;
-            foreach($checks as $check) {
-                if(!$check->isPassed()) {
-                    $passed = false;
-                    break;
+
+            if($envResult != null) {
+                $checks = $envResult->getCheckResults();
+                foreach($checks as $check) {
+                    if(!$check->isPassed()) {
+                        $passed = false;
+                        break;
+                    }
                 }
             }
 
