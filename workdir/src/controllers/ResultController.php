@@ -1,4 +1,7 @@
+<?php
+
 namespace firesnake\isItRunning\controllers;
+
 use firesnake\isItRunning\entities\EnvironmentResult;
 use firesnake\isItRunning\events\RequestEvent;
 use firesnake\isItRunning\http\RedirectResponse;
@@ -42,3 +45,27 @@ class ResultController
             'authenticatedUser' => $isItRunning->getAuthenticatedUser()
         ]);
     }
+
+    public function checkResult(RequestEvent $event) {
+        $request = $event->getRequest();
+        if (!isset($request->getGet()['q'])) {
+            return new RedirectResponse('/dashboard');
+        }
+
+        /** @var IsItRunning $isItRunning */
+        $isItRunning = $event->getParam('isItRunning');
+
+        /** @var EnvironmentResult $envResult */
+        $envResult = $isItRunning->getEntityManager()->getRepository(EnvironmentResult::class)->find($request->getGet()['q']);
+        $checkResults = $envResult->getCheckResults();
+
+        foreach($checkResults as $checkResult) {
+
+        }
+
+        return new TwigResponse('result/checkResult.html.twig', [
+            'authenticatedUser' => $isItRunning->getAuthenticatedUser(),
+            'checkResults' => $checkResults
+        ]);
+    }
+}

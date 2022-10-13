@@ -43,6 +43,12 @@ class CheckableEnvironment
      */
     private User $owner;
 
+    /**
+     * @ORM\OneToMany(targetEntity="EnvironmentResult", mappedBy="checkableEnvironment")
+     * @var Collection
+     */
+    private Collection $environmentResults;
+
 
     /**
      * @var Collection|ArrayCollection
@@ -156,5 +162,13 @@ class CheckableEnvironment
             $this->checks->removeElement($check);
             $check->removeEnvironment($this);
         }
+    }
+
+    /**
+     * @return EnvironmentResult[]
+     */
+    public function getEnvironmentResults() :array
+    {
+        return $this->environmentResults->getValues();
     }
 }

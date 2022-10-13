@@ -28,7 +28,7 @@ class EnvironmentResult
     private DateTime $performed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CheckableEnvironment", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="CheckableEnvironment", cascade={"remove"}, inversedBy="environmentResults")
      * @ORM\JoinColumn(name="environment_id", referencedColumnName="id", onDelete="cascade")
      * @var CheckableEnvironment
      */
