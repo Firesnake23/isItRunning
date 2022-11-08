@@ -29,7 +29,7 @@ class EnvironmentManager
         return $this->em->getRepository(CheckableEnvironment::class)->findBy(['owner' => $this->isItRunning->getAuthenticatedUser()]);
     }
 
-    public function getEnvironmentById(int $id): ?CheckableEnvironment
+    public function getEnvironmentById(string $id): ?CheckableEnvironment
     {
         $environment = $this->em->getRepository(CheckableEnvironment::class)->find($id);
         if($environment != null) {
@@ -72,7 +72,7 @@ class EnvironmentManager
 
     public function addNewVariable(CheckableEnvironment $environment, string $name, string $value)
     {
-        if($environment->getOwner() == $this->isItRunning->getAuthenticatedUser()) {
+        if($environment->getOwner() === $this->isItRunning->getAuthenticatedUser()) {
             $newVar = new EnvironmentVariable();
             $newVar->setName($name);
             $newVar->setValue($value);
