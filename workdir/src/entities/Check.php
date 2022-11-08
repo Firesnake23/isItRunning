@@ -14,10 +14,13 @@ use Twig\Environment;
 class Check
 {
     /**
-     * @ORM\Id() @ORM\Column(type="integer") @ORM\GeneratedValue()
+     * @ORM\Id()
+     * @ORM\Column(type="string")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="\firesnake\isItRunning\entities\generators\UUIDGenerator")
      * @var int
      */
-    private int $id;
+    private string $id;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -86,7 +89,7 @@ class Check
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }

@@ -14,10 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
 class CheckableEnvironment
 {
     /**
-     * @ORM\Id() @ORM\Column(type="integer") @ORM\GeneratedValue()
-     * @var int
+     * @ORM\Id()
+     * @ORM\Column(type="string")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="\firesnake\isItRunning\entities\generators\UUIDGenerator")
+     * @var string
      */
-    private int $id;
+    private string $id;
 
     /**
      * @ORM\Column(type="string")
@@ -66,7 +69,7 @@ class CheckableEnvironment
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }

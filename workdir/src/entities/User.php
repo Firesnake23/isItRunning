@@ -15,9 +15,11 @@ class User
     /**
      * @ORM\Id()
      * @ORM\Column()
-     * @ORM\GeneratedValue()
+     * @ORM\Column(type="string")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="\firesnake\isItRunning\entities\generators\UUIDGenerator")
      */
-    private int $id;
+    private string $id;
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -52,7 +54,7 @@ class User
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
