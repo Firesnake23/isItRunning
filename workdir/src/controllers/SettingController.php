@@ -41,6 +41,34 @@ class SettingController
         return new RedirectResponse('/settings');
     }
 
+    public function changePassword(RequestEvent $event) : Response
+    {
+        $authenticatedUser = $this->getAuthenticatedUser($event);
+        if($authenticatedUser == null) {
+            return new RedirectResponse('/');
+        }
+
+        $request = $event->getRequest();
+        if(
+            isset($request->getPost()['oldPass']) &&
+            isset($request->getPost()['newPass']) &&
+            isset($request->getPost()['newPass2'])
+        ) {
+            $oldPass = $request->getPost()['oldPass'];
+            $newPass = $request->getPost()['newPass'];
+            $newPass2 = $request->getPost()['newPass2'];
+
+            if($newPass == $newPass2) {
+                /** @var IsItRunning $isItRunning */
+                $isItRunning = $event->getParam('isItRunning');
+                $userService = $isItRunning->getUserManager();
+                $userService->changePassword($authenticatedUser, $oldPass, $newPass);
+            }
+        }
+
+        return new RedirectResponse('/settings');
+    }
+
     private function getAuthenticatedUser(RequestEvent $event) :?User
     {
         /** @var IsItRunning $isItRunning */

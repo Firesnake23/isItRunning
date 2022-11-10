@@ -39,8 +39,22 @@
             Change Password
         </div>
         <div class="card-body">
-            <form>
-
+            <form action="/settings/changePassword" method="post">
+                <div class="mb-3">
+                    <label for="oldPass" class="form-label">Old Password</label>
+                    <input type="password" class="form-control" id="oldPass" name="oldPass">
+                </div>
+                <div class="mb-3">
+                    <label for="newPass" class="form-label">Old Password</label>
+                    <input type="password" class="form-control" id="newPass" name="newPass">
+                </div>
+                <div class="mb-3">
+                    <label for="newPass2" class="form-label">Old Password</label>
+                    <input type="password" class="form-control" id="newPass2" name="newPass2">
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-success" value="Change Password">
+                </div>
             </form>
         </div>
     </template>
