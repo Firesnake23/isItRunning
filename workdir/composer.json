@@ -10,6 +10,7 @@
     "symfony/cache": "^6.1",
     "twig/twig": "^3.4",
     "dragonmantank/cron-expression": "^3.3",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "adistoe/env-loader": "^1.1"
   }
 }
