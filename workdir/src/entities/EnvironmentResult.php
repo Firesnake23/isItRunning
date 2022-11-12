@@ -93,4 +93,16 @@ class EnvironmentResult
     {
         return $this->checkResults->getValues();
     }
+
+    public function passed(): bool
+    {
+        $checkResults = $this->getCheckResults();
+        $passed = true;
+
+        foreach ($checkResults as $checkResult) {
+            $passed = $passed && $checkResult->isPassed();
+        }
+
+        return $passed;
+    }
 }
