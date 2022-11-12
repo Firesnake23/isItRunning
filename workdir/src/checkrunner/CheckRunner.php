@@ -8,16 +8,21 @@ use firesnake\isItRunning\entities\Check;
 use firesnake\isItRunning\entities\CheckableEnvironment;
 use firesnake\isItRunning\entities\CheckResult;
 use firesnake\isItRunning\entities\EnvironmentResult;
+use firesnake\isItRunning\IsItRunning;
+use firesnake\isItRunning\managers\EnvironmentManager;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class CheckRunner
 {
     private CheckableEnvironment $environment;
     private EntityManager $entityManager;
+    private IsItRunning $isItRunning;
 
-    public function __construct(CheckableEnvironment $environment, EntityManager $entityManager)
+    public function __construct(CheckableEnvironment $environment, EntityManager $entityManager, IsItRunning $isItRunning)
     {
         $this->environment = $environment;
         $this->entityManager = $entityManager;
+        $this->isItRunning = $isItRunning;
     }
 
     public function run()
@@ -27,19 +32,58 @@ class CheckRunner
         $environmentResult->setCheckableEnvironment($this->environment);
         $environmentResult->setPerformed(new DateTime());
 
+        $passed = true;
         foreach($checks as $check) {
-            $this->performCheck($environmentResult, $check);
+            $checkResult = $this->performCheck($environmentResult, $check);
+            $passed = $passed && $checkResult;
         }
 
+        $envManager = $this->isItRunning->getEnvironmentManager();
+        $lastResult = $envManager->getLastResult($this->environment);
+
         $this->entityManager->flush();
+
+        $lastResultPassed = $lastResult->passed();
+
+        if($lastResultPassed !== $passed) {
+            $phpmailer = new PHPMailer();
+
+            $phpmailer->isSMTP();
+            $phpmailer->Host = getenv('MAIL_HOST');
+            $phpmailer->SMTPAuth = true;
+            $phpmailer->Username = getenv('MAIL_USERNAME');
+            $phpmailer->Password = getenv('MAIL_PASSWORD');
+            $phpmailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $phpmailer->isHTML();
+            $phpmailer->Port = getenv('MAIL_PORT');
+
+            $targetMail = $this->environment->getOwner()->getMail();
+            $phpmailer->setFrom(getenv('MAIL_FROM'));
+            $phpmailer->addAddress($targetMail);
+
+            $phpmailer->Subject = 'Status change in ' . $this->environment->getName();
+
+            $phpmailer->Body = '
+                Status changed from ' .
+                ($lastResultPassed ? 'OK': 'FAILED') .
+                ' to ' .
+                ($passed ? 'OK' : 'FAILED') .
+                '<br> See details at http://' .
+                $_SERVER['SERVER_NAME']. '/checkResult?q=' . $environmentResult->getId()
+            ;
+
+            $phpmailer->send();
+
+        }
+
     }
 
-    private function performCheck(EnvironmentResult $environmentResult, Check $check)
+    private function performCheck(EnvironmentResult $environmentResult, Check $check): bool
     {
         $checkResult = new CheckResult();
         $checkResult->setEnvironmentResult($environmentResult);
 
-       $curlResult = $this->curl($check);
+        $curlResult = $this->curl($check);
 
         $checker = $check->getChecker();
 

@@ -50,7 +50,7 @@
                     {% for env in environments %}
                         <div class="form-check">
                             {% apply spaceless %}
-                                <input class="form-check-input" value="1" type="checkbox" id="check_{{ loop.index }}" onchange="saveEnvironment({{ env.getId() }})"
+                                <input class="form-check-input" value="1" type="checkbox" id="check_{{ loop.index }}" onchange="saveEnvironment('{{ env.getId() }}')"
                                         {% if check.hasEnvironment(env)%}
                                             checked
                                         {% endif %}

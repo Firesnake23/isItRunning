@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Entity;
 use firesnake\isItRunning\entities\Check;
 use firesnake\isItRunning\entities\CheckableEnvironment;
+use firesnake\isItRunning\entities\EnvironmentResult;
 use firesnake\isItRunning\entities\EnvironmentVariable;
 use firesnake\isItRunning\http\RedirectResponse;
 use firesnake\isItRunning\IsItRunning;
@@ -38,6 +39,15 @@ class EnvironmentManager
             }
         }
         return null;
+    }
+
+    public function getLastResult(CheckableEnvironment $environment) : EnvironmentResult
+    {
+        return $this->em->getRepository(EnvironmentResult::class)->findOneBy([
+            'checkableEnvironment' => $environment
+        ], [
+            'performed' => 'desc'
+        ]);
     }
 
     public function saveEnvironment(CheckableEnvironment $environment) :void

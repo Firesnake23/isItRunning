@@ -165,7 +165,7 @@ class EnvironmentController
                 /** @var IsItRunning $isItRunning */
                 $isItRunning = $event->getParam('isItRunning');
 
-                $checkRunner = new CheckRunner($env, $isItRunning->getEntityManager());
+                $checkRunner = new CheckRunner($env, $isItRunning->getEntityManager(), $isItRunning);
                 $checkRunner->run();
             }
         }

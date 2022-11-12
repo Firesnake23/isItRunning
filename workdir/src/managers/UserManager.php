@@ -33,4 +33,12 @@ class UserManager
 
         return false;
     }
+
+    public function changePassword(User $user, mixed $oldPass, mixed $newPass)
+    {
+        if($user->passwordMatches($oldPass)) {
+            $user->setPassword($newPass);
+            $this->saveUser($user);
+        }
+    }
 }
