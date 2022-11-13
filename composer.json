@@ -1,0 +1,28 @@
+{
+  "name": "firesnake/is-it-running",
+  "description": "A tool to check if a website is up and delivers the expected site",
+  "type": "project",
+  "license": "LGPL-2.1-only",
+  "authors": [
+    {
+      "name": "firesnake"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "firesnake\\isItRunning\\": "./src"
+    }
+  },
+  "require": {
+    "php": ">=8.0",
+    "doctrine/orm": "^2.13",
+    "doctrine/annotations": "^1.13",
+    "symfony/cache": "^6.1",
+    "twig/twig": "^3.4",
+    "dragonmantank/cron-expression": "^3.3",
+    "ext-curl": "*",
+    "adistoe/env-loader": "^1.1",
+    "phpmailer/phpmailer": "^6.6",
+    "ext-http": "*"
+  }
+}
