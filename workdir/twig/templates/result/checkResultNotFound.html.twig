@@ -1,0 +1,17 @@
+{% extends 'page.html.twig' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            Check Result not found
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                This checkresult could not be found. Most likely it has been deleted
+                by the cleanup job.<br>
+                If you want to adjust the cleanup settings, you can that <a href="/settings">here</a>
+                <br>
+                You can go back to the <a href="/dashboard">Dashboard</a>.
+            </div>
+        </div>
+    </div>
+{% endblock %}

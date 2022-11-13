@@ -6,6 +6,7 @@ use firesnake\isItRunning\entities\EnvironmentResult;
 use firesnake\isItRunning\events\RequestEvent;
 use firesnake\isItRunning\http\RedirectResponse;
 use firesnake\isItRunning\http\TextResponse;
+use firesnake\isItRunning\http\Twig404Response;
 use firesnake\isItRunning\http\TwigResponse;
 use firesnake\isItRunning\IsItRunning;
 
@@ -68,11 +69,14 @@ class ResultController
 
         /** @var EnvironmentResult $envResult */
         $envResult = $isItRunning->getEntityManager()->getRepository(EnvironmentResult::class)->find($request->getGet()['q']);
-        $checkResults = $envResult->getCheckResults();
 
-        foreach($checkResults as $checkResult) {
-
+        if($envResult == null) {
+            return new Twig404Response( 'result/checkResultNotFound.html.twig', [
+                'authenticatedUser' => $isItRunning->getAuthenticatedUser()
+            ]);
         }
+
+        $checkResults = $envResult->getCheckResults();
 
         return new TwigResponse('result/checkResult.html.twig', [
             'authenticatedUser' => $isItRunning->getAuthenticatedUser(),
