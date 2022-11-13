@@ -5,8 +5,8 @@
             <div class="col-lg-2">
                 <div class="list-group">
                     <div class="list-group-item list-group-item-action" data-source="#setMail" data-target="#target" onclick="fillDataTarget(this)">Email</div>
-                    <div class="list-group-item list-group-item-action" data-source="#changePassword" data-target="#target" onclick="fillDataTarget(this)">Change
-                        Password</div>
+                    <div class="list-group-item list-group-item-action" data-source="#changePassword" data-target="#target" onclick="fillDataTarget(this)">Change Password</div>
+                    <div class="list-group-item list-group-item-action" data-source="#cleanupSettings" data-target="#target" onclick="fillDataTarget(this)">Cleanup</div>
                 </div>
             </div>
             <div class="col-lg-10">
@@ -54,6 +54,28 @@
                 </div>
                 <div class="mb-3">
                     <input type="submit" class="btn btn-success" value="Change Password">
+                </div>
+            </form>
+        </div>
+    </template>
+
+    <template id="cleanupSettings">
+        <div class="card-header">
+            Cleanup Settings
+        </div>
+        <div class="card-body">
+            <form action="/settings/cleanupInterval" method="post">
+                <div class="mb-3">
+                    <label for="intervall" class="form-label">Cleanup Intervall</label>
+                    <select class="form-select" id="intervall" name="intervall">
+                        {% for cleanupValue in cleanupValues %}
+                            {% set selected = (cleanupValue == cleanup ? 'selected' : '') %}
+                            <option value="{{ cleanupValue }}" {{ selected }}> {{ cleanupValue }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-success" value="Save">
                 </div>
             </form>
         </div>

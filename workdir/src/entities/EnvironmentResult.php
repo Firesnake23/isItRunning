@@ -29,14 +29,14 @@ class EnvironmentResult
     private DateTime $performed;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CheckableEnvironment", cascade={"remove"}, inversedBy="environmentResults")
-     * @ORM\JoinColumn(name="environment_id", referencedColumnName="id", onDelete="cascade")
+     * @ORM\ManyToOne(targetEntity="CheckableEnvironment", inversedBy="environmentResults")
+     * @ORM\JoinColumn(name="environment_id", referencedColumnName="id")
      * @var CheckableEnvironment
      */
     private CheckableEnvironment $checkableEnvironment;
 
     /**
-     * @ORM\OneToMany(targetEntity="CheckResult", mappedBy="environmentResult")
+     * @ORM\OneToMany(targetEntity="CheckResult", mappedBy="environmentResult", cascade={"remove"})
      *  @var Collection|ArrayCollection
      */
     private Collection $checkResults;
