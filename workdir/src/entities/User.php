@@ -34,12 +34,6 @@ class User
     private string $password;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var ?string
-     */
-    private ?string $mail;
-
-    /**
      * @ORM\OneToMany(targetEntity="CheckableEnvironment", mappedBy="owner")
      * @var Collection
      */
@@ -51,10 +45,17 @@ class User
      */
     private Collection $checks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UserSettings", mappedBy="user")
+     * @var Collection
+     */
+    private Collection $settings;
+
     public function __construct()
     {
         $this->environments = new ArrayCollection();
         $this->checks = new ArrayCollection();
+        $this->settings = new ArrayCollection();
     }
 
     /**
@@ -89,22 +90,6 @@ class User
         $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMail(): ?string
-    {
-        return $this->mail;
-    }
-
-    /**
-     * @param string|null $mail
-     */
-    public function setMail(?string $mail): void
-    {
-        $this->mail = $mail;
-    }
-
     public final function passwordMatches(string $password): bool
     {
         if(password_needs_rehash($this->password, PASSWORD_BCRYPT)) {
@@ -122,5 +107,16 @@ class User
     public function getChecks(): Collection
     {
         return $this->checks;
+    }
+
+    public function getSetting(string $key): ?UserSettings
+    {
+        /** @var UserSettings $setting */
+        foreach($this->settings->getValues() as $setting) {
+            if($setting->getKey() === $key) {
+                return $setting;
+            }
+        }
+        return null;
     }
 }

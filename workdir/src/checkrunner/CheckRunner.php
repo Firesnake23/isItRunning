@@ -46,6 +46,14 @@ class CheckRunner
         $lastResultPassed = $lastResult->passed();
 
         if($lastResultPassed !== $passed) {
+            $targetMail = $this->environment->getOwner()->getSetting('mail');
+
+            if($targetMail === null) {
+                return;
+            }
+
+            $targetMail = $targetMail->getValue();
+
             $phpmailer = new PHPMailer();
 
             $phpmailer->isSMTP();
@@ -57,7 +65,7 @@ class CheckRunner
             $phpmailer->isHTML();
             $phpmailer->Port = getenv('MAIL_PORT');
 
-            $targetMail = $this->environment->getOwner()->getMail();
+
             $phpmailer->setFrom(getenv('MAIL_FROM'));
             $phpmailer->addAddress($targetMail);
 
