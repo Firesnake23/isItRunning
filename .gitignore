@@ -1,9 +1,9 @@
-workdir/vendor
+vendor
 
-workdir/bootstrap.php
-workdir/cli-config.php
+bootstrap.php
+cli-config.php
 
-workdir/composer.lock
-workdir/cache
+composer.lock
+cache
 
-workdir/src/entities/proxies
+src/entities/proxies
