@@ -4,7 +4,7 @@ use firesnake\isItRunning\checkrunner\CheckRunner;
 use firesnake\isItRunning\entities\CheckableEnvironment;
 use firesnake\isItRunning\IsItRunning;
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once '../../../../bootstrap.php';
 
 $em = getEntityManager();
 

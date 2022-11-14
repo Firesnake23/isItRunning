@@ -4,7 +4,7 @@ use firesnake\isItRunning\checkrunner\LogCleanup;
 use firesnake\isItRunning\entities\User;
 use firesnake\isItRunning\IsItRunning;
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once '../../../../bootstrap.php';
 $isItRunning = new IsItRunning(getEntityManager(), null);
 
 $logCleanup = new LogCleanup($isItRunning);
