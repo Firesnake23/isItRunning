@@ -5,6 +5,8 @@ namespace firesnake\isItRunning\controllers;
 use firesnake\isItRunning\entities\EnvironmentResult;
 use firesnake\isItRunning\events\RequestEvent;
 use firesnake\isItRunning\http\RedirectResponse;
+use firesnake\isItRunning\http\Response;
+use firesnake\isItRunning\http\TextResponse;
 use firesnake\isItRunning\http\TwigResponse;
 use firesnake\isItRunning\IsItRunning;
 
@@ -84,5 +86,12 @@ class IndexController
             'environments' => $environments,
             'stats' => $stats
         ]);
+    }
+
+    public function libJs(RequestEvent $event) : Response {
+        $path = __DIR__ . '/../../public/js/lib.js';
+        $file = file_get_contents($path);
+        header('content-type:application/javascript');
+        return new TextResponse($file);
     }
 }
