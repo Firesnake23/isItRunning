@@ -41,7 +41,7 @@ class EnvironmentManager
         return null;
     }
 
-    public function getLastResult(CheckableEnvironment $environment) : EnvironmentResult
+    public function getLastResult(CheckableEnvironment $environment) : ?EnvironmentResult
     {
         return $this->em->getRepository(EnvironmentResult::class)->findOneBy([
             'checkableEnvironment' => $environment

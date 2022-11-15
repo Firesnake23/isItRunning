@@ -43,6 +43,10 @@ class CheckRunner
 
         $this->entityManager->flush();
 
+        if($lastResult == null) { //no status change
+            return;
+        }
+
         $lastResultPassed = $lastResult->passed();
 
         if($lastResultPassed !== $passed) {
