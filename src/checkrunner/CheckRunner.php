@@ -129,8 +129,8 @@ class CheckRunner
 
             $envVars = $this->environment->getEnvVarsAssoc();
             foreach ($params as $param) {
-                if(isset($envVars[$param])) {
-                    $checkUrl = str_replace('{{' . $param . '}}', $envVars[$param]->getValue(), $checkUrl);
+                if(isset($envVars[trim($param)])) {
+                    $checkUrl = str_replace('{{' . $param . '}}', $envVars[trim($param)]->getValue(), $checkUrl);
                 }
             }
         }
