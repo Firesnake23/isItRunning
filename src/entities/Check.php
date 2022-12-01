@@ -220,7 +220,7 @@ class Check
             $paramEnd = strpos($unchecked, '}}');
 
             if($paramEnd !== false) {
-                $param = substr($unchecked, $start + 2, $paramEnd - $paramStart - 2);
+                $param = substr($unchecked, $paramStart + 2, $paramEnd - $paramStart - 2);
                 $params[] = $param;
                 $start = $paramEnd;
                 continue;
