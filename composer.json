@@ -23,6 +23,7 @@
     "ext-curl": "*",
     "adistoe/env-loader": "^1.1",
     "phpmailer/phpmailer": "^6.6",
-    "ext-http": "*"
+    "ext-http": "*",
+    "doctrine/migrations": "^3.5"
   }
 }

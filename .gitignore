@@ -2,6 +2,7 @@ vendor
 
 bootstrap.php
 cli-config.php
+.env
 
 composer.lock
 cache
