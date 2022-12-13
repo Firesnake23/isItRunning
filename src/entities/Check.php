@@ -213,6 +213,9 @@ class Check
         $start = 0;
         while(true) {
             $unchecked = substr($str, $start);
+            if($unchecked === '') {
+                break;
+            }
             $paramStart = strpos($unchecked, '{{');
             if ($paramStart === false) {
                 return $params;
@@ -228,5 +231,6 @@ class Check
 
             $start = $paramStart;
         }
+        return $params;
     }
 }
