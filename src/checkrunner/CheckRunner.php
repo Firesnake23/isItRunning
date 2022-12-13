@@ -31,13 +31,11 @@ class CheckRunner
         $environmentResult = new EnvironmentResult();
         $environmentResult->setCheckableEnvironment($this->environment);
         $environmentResult->setPerformed(new DateTime());
-
         $passed = true;
         foreach($checks as $check) {
             $checkResult = $this->performCheck($environmentResult, $check);
             $passed = $passed && $checkResult;
         }
-
         $envManager = $this->isItRunning->getEnvironmentManager();
         $lastResult = $envManager->getLastResult($this->environment);
 
@@ -48,7 +46,6 @@ class CheckRunner
         }
 
         $lastResultPassed = $lastResult->passed();
-
         if($lastResultPassed !== $passed) {
             $targetMail = $this->environment->getOwner()->getSetting('mail');
 
@@ -81,7 +78,7 @@ class CheckRunner
                 ' to ' .
                 ($passed ? 'OK' : 'FAILED') .
                 '<br> See details at http://' .
-                $_SERVER['SERVER_NAME']. '/checkResult?q=' . $environmentResult->getId()
+                getenv('SERVER_NAME'). '/checkResult?q=' . $environmentResult->getId()
             ;
 
             $phpmailer->send();
@@ -94,7 +91,6 @@ class CheckRunner
     {
         $checkResult = new CheckResult();
         $checkResult->setEnvironmentResult($environmentResult);
-
         $curlResult = $this->curl($check);
 
         $checker = $check->getChecker();
@@ -122,11 +118,9 @@ class CheckRunner
     {
         $checkUrl = $check->getUrl();
         $hasParams = str_contains($checkUrl, '{{');
-
         //fill params
         if($hasParams) {
             $params = $check->getUrlParams();
-
             $envVars = $this->environment->getEnvVarsAssoc();
             foreach ($params as $param) {
                 if(isset($envVars[trim($param)])) {
