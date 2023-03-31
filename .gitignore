@@ -1,4 +1,6 @@
 vendor
+.vagrant
+.vscode
 
 bootstrap.php
 cli-config.php
