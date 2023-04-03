@@ -27,28 +27,33 @@ class EnvironmentController
         $envResultRepo = $isItRunning->getEntityManager()->getRepository(EnvironmentResult::class);
 
         $statusMap = [];
+        $failedResults = [];
 
         foreach($environments as $environment) {
             $envResult = $envResultRepo->getLatestResult($environment);
             $passed = true;
+            $tempList = [];
 
             if($envResult != null) {
                 $checks = $envResult->getCheckResults();
                 foreach($checks as $check) {
                     if(!$check->isPassed()) {
-                        $passed = false;
-                        break;
+                        $passed = false;   
+                        $tempList[] = $check;
                     }
                 }
             }
-
+            $failedResults[$environment->getId()] = $tempList;
+ 
             $statusMap[$environment->getId()] = $passed;
         }
+        
 
         return new TwigResponse('environment/overview.html.twig', [
             'list' => $environments,
             'authenticatedUser' => $this->getAuthenticatedUser($event),
-            'statusMap' => $statusMap
+            'statusMap' => $statusMap,
+            'checkResults' => $failedResults,
         ]);
     }
 
