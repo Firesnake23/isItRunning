@@ -9,6 +9,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th colspan="{{ environments | length }}" class="text-center">Environment</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -16,6 +17,13 @@
                     {% for check in list%}
                         <tr>
                             <td>{{ check.getName() }}</td>
+                            {% for env in environments %}
+                                {% if check.hasEnvironment(env)%}
+                                    <td class="text-success">{{ env.getName() }}</td>
+                                {% else %}
+                                    <td class="text-danger">{{ env.getName() }}</td>
+                                {% endif %}
+                            {% endfor %}
                             <td>
                                 <a href="/check/delete?q={{ check.getId() }}" class="btn btn-danger">Delete</a>
                                 <a href="/check/edit?q={{ check.getId() }}" class="btn btn-primary">Edit</a>

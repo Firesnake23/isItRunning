@@ -18,8 +18,12 @@ class CheckController
     public function overview(RequestEvent $event): TwigResponse
     {
         $checks = $this->getCheckManager($event)->listChecks();
+        $isItRunning = $event->getParam('isItRunning');
+        $environmentManager = $isItRunning->getEnvironmentManager();
+        $environments = $environmentManager->listEnvironments();
         return new TwigResponse('check/overview.html.twig', [
             'list' => $checks,
+            'environments' => $environments,
             'authenticatedUser' => $this->getAuthenticatedUser($event)
         ]);
     }
