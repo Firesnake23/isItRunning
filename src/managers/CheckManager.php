@@ -21,7 +21,7 @@ class CheckManager
 
     public function listChecks()
     {
-        return $this->entityManager->getRepository(Check::class)->findBy(['owner' => $this->isItRunning->getAuthenticatedUser()]);
+        return $this->entityManager->getRepository(Check::class)->findBy(['owner' => $this->isItRunning->getAuthenticatedUser()], ['name' => 'asc']);
     }
 
     public function getCheckById(string $id) :?Check

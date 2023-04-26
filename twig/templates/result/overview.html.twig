@@ -5,7 +5,8 @@
             Check Results {{ result[0].getName() }}
         </div>
         <div class="card-body">
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover fs-5">
+                {% for result in results%}
                 <thead>
                     <tr>
                         <th>Performed</th>
@@ -13,23 +14,32 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for result in results%}
-                        {% set bg = statusMap[result.getId()] == true ? 'success' : 'danger' %}
-                        {% set text = statusMap[result.getId()] == true ? 'OK' : 'FAILED' %}
-                        <tr>
-                            <td>
-                                {{ result.getPerformed()|date('d.m.Y H:i:s') }}
-                            </td>
-                            <td>
-                                <label class="badge bg-{{bg}}">{{ text }}</label>
-                            </td>
-                            <td>
-                                <a href="/checkResult?q={{ result.getId() }}" class="btn btn-primary">Details</a>
-                            </td>
-                        </tr>
+                <tbody class="table-group-divider">
+                    {% set bg = statusMap[result.getId()] == true ? 'success' : 'danger' %}
+                    {% set text = statusMap[result.getId()] == true ? 'OK' : 'FAILED' %}
+
+                    <tr>
+                        <td>
+                            {{ result.getPerformed()|date('d.m.Y H:i:s') }}
+                        </td>
+                        <td>
+                            <label class="badge bg-{{bg}}">{{ text }}</label>
+                        </td>
+                        <td>
+                            <a href="/checkResult?q={{ result.getId() }}" class="btn btn-primary">Details</a>
+                        </td>
+                    </tr>
+                        {% if statusMap[result.getId()] == false %}
+                        {% for result in checkResults[result.getId()] %}
+                            <tr>
+                                <td colspan="3" class="fs-6 ps-5">  
+                                    {{ result.getCheck().getName() }}
+                                </td>
+                            </tr>
                     {% endfor %}
+                    {%endif%}
                 </tbody>
+                {% endfor %}
             </table>
             <div class="row">
                 <nav aria-label="Page navigation example">

@@ -40,12 +40,19 @@ class ResultController
 
 
         $statusMap = [];
+        $failedResults=[];
+
         foreach ($envResults as $envResult) {
-            $checkResults = $envResult->getCheckResults();
             $status = true;
+            $tempList=[];
+            $checkResults = $envResult->getCheckResults();
             foreach($checkResults as $checkResult) {
-                $status = $status & $checkResult->isPassed();
+                if(!$checkResult->isPassed()){
+                    $status = false;
+                    $tempList[] = $checkResult;
+                }
             }
+            $failedResults[$envResult->getId()] = $tempList;
             $statusMap[$envResult->getId()] = $status;
         }
 
@@ -54,7 +61,8 @@ class ResultController
             'statusMap' => $statusMap,
             'maxPages' => $maxPages,
             'page' => $page,
-            'authenticatedUser' => $isItRunning->getAuthenticatedUser()
+            'authenticatedUser' => $isItRunning->getAuthenticatedUser(),
+            'checkResults' => $failedResults
         ]);
     }
 

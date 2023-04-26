@@ -28,6 +28,16 @@
                                 <label class="badge bg-{{bg}}">{{ text }}</label>
                             </td>
                         </tr>
+                        {% if statusMap[environment.getId()] == false %}
+                            {% for result in checkResults[environment.getId()] %}
+                                    <tr>
+                                        <td colspan="3" class="fs-6">
+                                            <label class="badge bg-{{bg}}">{{ text }}</label>
+                                            {{ result.getCheck().getName() }}
+                                         </td>
+                                    </tr>
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
